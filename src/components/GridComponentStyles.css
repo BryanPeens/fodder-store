@@ -1,0 +1,63 @@
+* {
+    box-sizing: border-box;
+}
+
+.row {
+    padding: 0.75vw;
+    display: grid;
+    grid-template-columns: repeat(64, 1fr);
+    grid-template-rows: 55vh 30vh;
+    grid-row-gap: 0.95vw;
+}
+
+.box a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.box a:hover img {
+    opacity: 0.75;
+}
+
+.box__inner {
+    background-color: #005696;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.box__inner img {
+    width: 100%;
+    height: 100%;
+    object-position: 50% 50%;
+    object-fit: cover;
+    transition: opacity .2s ease-out;
+}
+
+.box--left {
+    clip-path: polygon(0 0, 98% 0, 83% 100%, 0 100%);
+    grid-row: 1;
+    grid-column: 1 / span 35;
+}
+
+.box--right {
+    clip-path: polygon(17% 0, 100% 0, 100% 100%, 2% 100%);
+    grid-row: 1;
+    grid-column: span 35 / -1;
+}
+
+.box--small {
+    grid-row: 2;
+}
+
+.box--small.box--left {
+    clip-path: polygon(0 0, 83% 0, 98% 100%, 0 100%);
+}
+
+.box--small.box--right {
+    clip-path: polygon(2% 0, 100% 0, 100% 100%, 17% 100%);
+}
