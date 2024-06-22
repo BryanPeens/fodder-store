@@ -6,6 +6,9 @@ const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+        
     const storedCartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
     setCartProducts(storedCartProducts);
   }, []);
@@ -18,25 +21,25 @@ const Cart = () => {
     localStorage.setItem("cartProducts", JSON.stringify(updatedCart));
   };
 
-// Calculate total price and format as currency
-const getTotalPrice = () => {
-  if (cartProducts.length === 0) {
-    return "$0.00"; // Return default value if cart is empty
-  }
-
-  // Calculate total price by iterating through cartProducts
-  const totalPrice = cartProducts.reduce((total, product) => {
-    const productTotal = product.finalPrice * product.quantity;
-    return total + productTotal;
-  }, 0);
-
-  // Format total price as currency
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(totalPrice);
-};
-
+  // Calculate total price and format as currency
+  const getTotalPrice = () => {
+    if (cartProducts.length === 0) {
+      return "$0.00"; // Return default value if cart is empty
+    }
+  
+    // Calculate total price by summing up finalPrice of each product
+    const totalPrice = cartProducts.reduce((total, product) => {
+      const productPrice = parseFloat(product.finalPrice);
+      return total + productPrice;
+    }, 0);
+  
+    // Format total price as currency
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    }).format(totalPrice);
+  };
+  
 
   return (
     <div className="max-w-7xl mx-auto mb-[600px] p-4">

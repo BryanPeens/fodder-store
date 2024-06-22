@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaTrash } from "react-icons/fa";
 
 const PopupNotification = React.memo(({ onClose, productDetails }) => {
   const hasDetails =
@@ -27,19 +28,21 @@ const PopupNotification = React.memo(({ onClose, productDetails }) => {
             <p className="text-gray-500">Final Price: ${productDetails.finalPrice}</p>
           </div>
         )}
-        <button
-          className="mt-4 bg-blue-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition"
-          onClick={handleOkClick}
-        >
-          OK
-        </button>
-        {hasDetails && (
-          <Link to="/products">
-            <button className="mt-4 bg-green-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-green-600 transition ml-4">
-              Continue Shopping
-            </button>
-          </Link>
-        )}
+        <div className="mt-4 flex justify-center">
+          <button
+            className="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition"
+            onClick={handleOkClick}
+          >
+            OK
+          </button>
+          {hasDetails && (
+            <Link to="/products">
+              <button className="bg-green-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-green-600 transition ml-4">
+                Continue Shopping
+              </button>
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -13,17 +13,17 @@ const Details = () => {
   const [quantity, setQuantity] = useState(1);
   const [product, setProduct] = useState(null);
   const [selectedPrice, setSelectedPrice] = useState("");
-  const [finalPrice, setFinalPrice] = useState(0);
   const [showPopup, setShowPopup] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+        
     const fetchProductFromStorage = async () => {
       try {
-        const storedProduct = JSON.parse(
-          localStorage.getItem("selectedProduct")
-        );
+        const storedProduct = JSON.parse(localStorage.getItem("selectedProduct"));
         if (storedProduct) {
           setProduct(storedProduct);
         } else {
@@ -41,31 +41,18 @@ const Details = () => {
   const decrementQuantity = useCallback(() => {
     if (quantity > 1) {
       setQuantity((prevQuantity) => prevQuantity - 1);
-      updateFinalPrice(selectedSize, quantity - 1);
     }
-  }, [quantity, selectedSize]);
+  }, [quantity]);
 
   const incrementQuantity = useCallback(() => {
     setQuantity((prevQuantity) => prevQuantity + 1);
-    updateFinalPrice(selectedSize, quantity + 1);
-  }, [quantity, selectedSize]);
+  }, []);
 
   const handleSizeSelect = useCallback(
     (size, label) => {
       setSelectedSize(size);
       setSelectedSizeLabel(label);
       setSelectedPrice(product.price[size]);
-      updateFinalPrice(size, quantity);
-    },
-    [product, quantity]
-  );
-
-  const updateFinalPrice = useCallback(
-    (size, quantity) => {
-      if (product && product.price && product.price[size]) {
-        const price = parseFloat(product.price[size].replace(/[^0-9.-]+/g, ""));
-        setFinalPrice(price * quantity);
-      }
     },
     [product]
   );
@@ -76,16 +63,12 @@ const Details = () => {
       return;
     }
 
-    const priceString = selectedPrice || product.price[0];
-    const price = parseFloat(priceString.replace(/[^0-9.-]+/g, ""));
-    const calculatedFinalPrice = price * quantity;
-    setFinalPrice(calculatedFinalPrice.toFixed(2));
-
+    const finalPrice = product.price[selectedSize] * quantity; // Calculate final price
     const newProduct = {
       name: product.name,
       selectedSizeLabel: selectedSizeLabel,
       quantity: quantity,
-      finalPrice: calculatedFinalPrice.toFixed(2),
+      finalPrice: finalPrice.toFixed(2), // Ensure finalPrice is formatted as string
     };
 
     try {
@@ -97,9 +80,9 @@ const Details = () => {
       console.error("Error saving product to localStorage:", error.message);
     }
 
-    setShowPopup(true);
     setProductDetails(newProduct);
-  }, [selectedSize, quantity, selectedPrice, product, selectedSizeLabel]);
+    setShowPopup(true);
+  }, [selectedSize, quantity, product, selectedSizeLabel]);
 
   const closePopup = useCallback(() => {
     setShowPopup(false);
@@ -243,10 +226,7 @@ const Details = () => {
       </div>
 
       {showPopup && (
-        <PopupNotification
-          onClose={closePopup}
-          productDetails={productDetails}
-        />
+        <PopupNotification onClose={closePopup} productDetails={productDetails} />
       )}
     </section>
   );

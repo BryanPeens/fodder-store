@@ -107,7 +107,7 @@ const ProductCard = ({ product, handleDetailsClick }) => (
     <div className="relative">
       <img
         className="w-full h-64 object-cover transition-transform duration-300 ease-in-out hover:scale-110 rounded-lg"
-        src={product.thumbnail} // Assuming thumbnail is used for grid view
+        src={product.thumbnail}
         alt={product.name}
         style={{
           boxShadow:
@@ -126,7 +126,7 @@ const ProductCard = ({ product, handleDetailsClick }) => (
       <div className="absolute bottom-0 left-0 right-0 p-4 flex flex-col justify-end space-y-2 rounded-lg">
         <div className="flex flex-col sm:flex-row justify-between items-center flex-wrap space-y-2 sm:space-y-0 w-full">
           <span className="text-white font-bold text-lg sm:text-xl drop-shadow-md hidden sm:block text-center">
-            {product.price[0]}
+            ${product.price[0].toFixed(2)}
           </span>
           <div className="flex flex-col sm:flex-row sm:space-x-2 w-full sm:w-auto mt-2 mb-2 sm:mt-0 sm:mb-0 justify-center">
             <button
@@ -148,52 +148,52 @@ const ProductCard = ({ product, handleDetailsClick }) => (
   </motion.div>
 );
 
-const ProductCardAlternate = ({ product, handleDetailsClick }) => {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      className="skeuomorphic-card-glass"
-    >
-      <div className="p-2">
-        <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
-        <p className="text-sm text-gray-700">{product.description}</p>
-        {product.price && (
-          <p className="text-lg font-bold text-gray-800 mt-2">
-            {product.price[0]}
-          </p>
-        )}
-      </div>
-      <img
-      src={product.thumbnail} // Assuming thumbnail is used for grid view
+
+const ProductCardAlternate = ({ product, handleDetailsClick }) => (
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    className="skeuomorphic-card-glass"
+  >
+    <div className="p-2">
+      <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
+      <p className="text-sm text-gray-700">{product.description}</p>
+      {product.price && (
+        <p className="text-lg font-bold text-gray-800 mt-2">
+          ${product.price[0].toFixed(2)}
+        </p>
+      )}
+    </div>
+    <img
+      src={product.thumbnail}
       alt={product.name}
-        className="w-full h-48 object-cover rounded-md shadow-md"
-      />
-      <div className="p-4 text-center">
-        {product.price ? (
-          <button
-            className="skeuomorphic-button-orange mt-4 flex items-center justify-center w-full"
-            onClick={() => handleDetailsClick(product)}
+      className="w-full h-48 object-cover rounded-md shadow-md"
+    />
+    <div className="p-4 text-center">
+      {product.price ? (
+        <button
+          className="skeuomorphic-button-orange mt-4 flex items-center justify-center w-full"
+          onClick={() => handleDetailsClick(product)}
+        >
+          <span className="text-center mx-3">Details</span>
+          <motion.div
+            whileHover={{ scale: 1.2, color: "#9ccf8f" }} // Gold color
+            transition={{ type: "spring", stiffness: 300 }}
           >
-            <span className="text-center mx-3">Details</span>
-            <motion.div
-              whileHover={{ scale: 1.2, color: "#9ccf8f" }} // Gold color
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              <FaInfoCircle size={24} />
-            </motion.div>
-          </button>
-        ) : (
-          <Link
-            to="/contact"
-            className="skeuomorphic-button-green mt-4 flex items-center justify-center w-full"
-          >
-            Contact Us
-          </Link>
-        )}
-      </div>
-    </motion.div>
-  );
-};
+            <FaInfoCircle size={24} />
+          </motion.div>
+        </button>
+      ) : (
+        <Link
+          to="/contact"
+          className="skeuomorphic-button-green mt-4 flex items-center justify-center w-full"
+        >
+          Contact Us
+        </Link>
+      )}
+    </div>
+  </motion.div>
+);
+
 
 const SingleProductCard = ({ product, handleDetailsClick }) => (
   <motion.div
