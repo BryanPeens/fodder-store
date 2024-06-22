@@ -1,6 +1,7 @@
 import React from "react";
 import about_bg from "../../assets/images/about-bg.png";
 import pellet_bg from "../../assets/images/pellets.png";
+import { Link } from "react-router-dom";
 
 const About = () => {
   return (
@@ -92,12 +93,12 @@ const About = () => {
 
             {/* Call to Action Button */}
             <div className="mt-8">
-              <a
-                href="/products"
+              <Link
+                to="/products"
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition-transform duration-300 hover:scale-105"
               >
                 Explore Our Products
-              </a>
+              </Link>
             </div>
           </div>
         </div>
