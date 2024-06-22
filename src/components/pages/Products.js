@@ -18,7 +18,10 @@ const Products = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Inject CSS styles for the green button
+    // Scroll to the top when the component mounts
+    window.scrollTo(0, 0);
+
+    // Inject CSS styles for the green card
     const styleSheetCardGreen = document.createElement("style");
     styleSheetCardGreen.type = "text/css";
     styleSheetCardGreen.innerText = skeuomorphicCardCSS;
