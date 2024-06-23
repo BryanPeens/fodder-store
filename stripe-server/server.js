@@ -1,9 +1,7 @@
 const express = require('express');
 const app = express();
+const stripe = require('stripe')('sk_test_51PUiXdJUQnWgPZkGrcGO6VO3ymvR81CAGHete8zdAlTf7WxGM50eiBMJ2Asf1IuqjZTzQKro3jSirIy9iWKbqnTV00uPHJ6uDR'); // Replace with your actual Stripe secret key
 const cors = require('cors');
-require('dotenv').config(); // Load environment variables
-
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); // Use the Stripe secret key from .env
 
 app.use(express.json());
 app.use(cors()); // Enable CORS for all requests
@@ -14,14 +12,13 @@ app.post('/create-checkout-session', async (req, res) => {
   console.log(lineItems);
 
   try {
-    const isProduction = process.env.NODE_ENV === 'production';
-
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: isProduction ? process.env.SUCCESS_URL_PROD : process.env.SUCCESS_URL,
-      cancel_url: isProduction ? process.env.CANCEL_URL_PROD : process.env.CANCEL_URL,
+      // make localhost:3000 and live 
+      success_url: 'https://fodder-store.onrender.com/success', // Replace with your success URL
+      cancel_url: 'https://fodder-store.onrender.com/cancel',   // Replace with your cancel URL
     });
 
     res.json({ id: session.id });
