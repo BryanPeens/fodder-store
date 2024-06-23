@@ -19,6 +19,8 @@ app.post('/create-checkout-session', async (req, res) => {
       // make localhost:3000 and live 
       success_url: 'https://fodder-store.onrender.com/success', // Replace with your success URL
       cancel_url: 'https://fodder-store.onrender.com/cancel',   // Replace with your cancel URL
+      // success_url: 'https://fodder-store.onrender.com/success', // Replace with your success URL
+      // cancel_url: 'https://fodder-store.onrender.com/cancel',   // Replace with your cancel URL
     });
 
     res.json({ id: session.id });
