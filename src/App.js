@@ -12,6 +12,13 @@ import Footer from './components/Footer';
 import Details from './components/Details';
 import Cart from './components/Cart';
 
+import SuccessPage from './components/SuccessPage';
+import CancelPage from './components/CancelPage';
+
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('your_publishable_key');
+
 const App = () => {
   return (
     <Router>
@@ -26,6 +33,8 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelPage />} />
       </Routes>
       <Footer/>
     </Router>

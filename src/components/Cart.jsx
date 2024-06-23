@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaTrash } from "react-icons/fa";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51PUiXdJUQnWgPZkGGJbZQSKPYAAA8Pya3ljW3KBiyhTFIMKWW77nE72vmb0piKZmnKxaYUcsKS6B980qfeQM6guv00YsdBTIuI"
+);
 
 const Cart = () => {
   const [cartProducts, setCartProducts] = useState([]);
 
   useEffect(() => {
-    // Scroll to the top when the component mounts
     window.scrollTo(0, 0);
-        
-    const storedCartProducts = JSON.parse(localStorage.getItem("cartProducts")) || [];
+    const storedCartProducts =
+      JSON.parse(localStorage.getItem("cartProducts")) || [];
     setCartProducts(storedCartProducts);
   }, []);
 
-  // Function to remove a product from the cart
   const removeFromCart = (index) => {
     const updatedCart = [...cartProducts];
     updatedCart.splice(index, 1);
@@ -21,25 +24,65 @@ const Cart = () => {
     localStorage.setItem("cartProducts", JSON.stringify(updatedCart));
   };
 
-  // Calculate total price and format as currency
   const getTotalPrice = () => {
     if (cartProducts.length === 0) {
-      return "$0.00"; // Return default value if cart is empty
+      return "$0.00";
     }
-  
-    // Calculate total price by summing up finalPrice of each product
+
     const totalPrice = cartProducts.reduce((total, product) => {
-      const productPrice = parseFloat(product.finalPrice);
+      const productPrice = parseFloat(product.finalPrice.replace("$", ""));
       return total + productPrice;
     }, 0);
-  
-    // Format total price as currency
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
+
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
     }).format(totalPrice);
   };
-  
+
+  const handleCheckout = async () => {
+    try {
+      const stripe = await stripePromise;
+      const lineItems = cartProducts.map((product) => ({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: product.name,
+          },
+          unit_amount: parseFloat(product.finalPrice.replace("$", "")) * 100,
+        },
+        quantity: product.quantity,
+      }));
+
+      const response = await fetch(
+        "http://localhost:4000/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ lineItems }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session");
+      }
+
+      const session = await response.json();
+      const result = await stripe.redirectToCheckout({
+        sessionId: session.id,
+      });
+
+      if (result.error) {
+        console.error("Stripe redirect error:", result.error.message);
+        // Handle error notification or fallback
+      }
+    } catch (error) {
+      console.error("Error during checkout:", error.message);
+      // Handle error notification or fallback
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto mb-[600px] p-4">
@@ -51,7 +94,9 @@ const Cart = () => {
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-xl font-semibold">{product.name}</h2>
-                  <p className="text-gray-500">Size: {product.selectedSizeLabel}</p>
+                  <p className="text-gray-500">
+                    Size: {product.selectedSizeLabel}
+                  </p>
                   <p className="text-gray-500">Quantity: {product.quantity}</p>
                 </div>
                 <p className="text-xl font-bold">${product.finalPrice}</p>
@@ -74,11 +119,12 @@ const Cart = () => {
                 Back to Shopping
               </button>
             </Link>
-            <Link to="/checkout">
-              <button className="w-full md:w-auto bg-blue-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300 mt-4 md:mt-0">
-                Proceed to Checkout
-              </button>
-            </Link>
+            <button
+              className="w-full md:w-auto bg-blue-500 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300 mt-4 md:mt-0"
+              onClick={handleCheckout}
+            >
+              Proceed to Checkout
+            </button>
           </div>
         </div>
       ) : (
