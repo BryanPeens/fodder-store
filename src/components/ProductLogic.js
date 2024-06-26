@@ -75,7 +75,7 @@ export const sproutPelletsProducts = [
 
 export const freshFodderSproutsProducts = [
   {
-    id: 3,
+    id: 5,
     name: "Barley Sprouts or Fodder Mats",
     thumbnail: fod1,
     images: [fod1, fod1, fod1],
@@ -83,7 +83,7 @@ export const freshFodderSproutsProducts = [
       "Barley grains are sprouted in a controlled environment to produce fresh, green fodder. This method involves soaking the grains in water and then allowing them to germinate and grow into small plants, which are then fed to the livestock.",
     price: [23.99, 42.99, 62.99],
     brand: "FarmFresh",
-    sku: "CMXP456",
+    sku: "BSPR567",
     weight: 2.2,
     dimensions: {
       width: 25,
@@ -92,7 +92,7 @@ export const freshFodderSproutsProducts = [
     },
   },
   {
-    id: 4,
+    id: 6,
     name: "Barley Hay",
     thumbnail: fod2,
     images: [fod2, fod2, fod2],
@@ -100,7 +100,7 @@ export const freshFodderSproutsProducts = [
       "Barley plants undergo a process similar to that of traditional hay: they are meticulously cut at the right stage of growth, then carefully dried to preserve their nutritional value, and finally baled into compact bundles for easy handling, storage, and transportation.",
     price: [23.99, 42.99, 62.99],
     brand: "FarmFresh",
-    sku: "CMXP456",
+    sku: "BHAY678",
     weight: 2.2,
     dimensions: {
       width: 25,
@@ -112,11 +112,20 @@ export const freshFodderSproutsProducts = [
 
 export const sproutingSystemsProducts = [
   {
-    id: 5,
+    id: 7,
     name: "Sprouting Systems",
     image: systems_image,
     description:
       "Our sprouting systems provide advanced hydroponic solutions for commercial and home growers. They maximize nutrient uptake, accelerate growth, and ensure high-quality yields of fresh, nutritious sprouts. Ideal for soil-free cultivation, our space-saving designs are easy to use and perfect for producing healthy animal feed.",
+    price: [299.99, 499.99, 699.99], // Adding a price for consistency
+    brand: "HydroGrow",
+    sku: "SPRTSYS01",
+    weight: 15.0,
+    dimensions: {
+      width: 100,
+      height: 50,
+      depth: 50,
+    },
   },
 ];
 

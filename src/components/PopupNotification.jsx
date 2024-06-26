@@ -8,7 +8,8 @@ const PopupNotification = React.memo(({ onClose, productDetails }) => {
     productDetails.name &&
     productDetails.selectedSizeLabel &&
     productDetails.quantity &&
-    productDetails.finalPrice;
+    productDetails.finalPrice &&
+    productDetails.pricePerProduct;
 
   const handleOkClick = () => {
     onClose();
@@ -25,6 +26,7 @@ const PopupNotification = React.memo(({ onClose, productDetails }) => {
             <p className="text-gray-800">{productDetails.name}</p>
             <p className="text-gray-500">Size: {productDetails.selectedSizeLabel}</p>
             <p className="text-gray-500">Quantity: {productDetails.quantity}</p>
+            <p className="text-gray-500">Price per Product: ${productDetails.pricePerProduct}</p>
             <p className="text-gray-500">Final Price: ${productDetails.finalPrice}</p>
           </div>
         )}
